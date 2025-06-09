@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: dbtestpg
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - my_network
+  backend:
+    build: ./Backend
+    container_name: backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=${POSTGRES_DB}"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - my_network
+  frontend:
+    build: ./Frontend
+    container_name: frontend
+    environment:
+      API_URL: "http://backend:8080"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - my_network
+
+volumes:
+  pg_data:
+
+networks:
+  my_network:
+    driver: bridge

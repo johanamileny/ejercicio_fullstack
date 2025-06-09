@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    networks:
+      - backend-network
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+networks:
+  backend-network:
+    driver: bridge

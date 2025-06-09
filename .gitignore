@@ -1,0 +1,17 @@
+# === Ignorar carpetas y archivos de Node.js ===
+node_modules/
+.env*
+*.log
+
+# === Ignorar carpetas y archivos de .NET ===
+[Bb]in/
+[Oo]bj/
+*.exe
+*.dll
+*.pdb
+*.user
+*.suo
+project.lock.json
+
+# === Visual Studio Code ===
+.vscode/
