@@ -42,7 +42,7 @@ export default function Login() {
         window.dispatchEvent(new Event("userAuthChange"));
 
         // Redirigir tras inicio de sesión exitoso
-        navigate("/");
+        navigate("/index");
       } else {
         setErrorMessage("Usuario no existe");
         setTimeout(() => setErrorMessage(null), 3000);
