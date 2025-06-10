@@ -19,7 +19,6 @@ namespace Api.Controllers
         }
 
         // GET: api/Usuarios
-        [Authorize(Roles = "ADMIN")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetUsuarios()
         {
@@ -30,7 +29,8 @@ namespace Api.Controllers
                 u.Id,
                 u.Email,
                 u.Nombre,
-                u.UserType
+              
+                
             }));
         }
 
