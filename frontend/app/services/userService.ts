@@ -1,7 +1,7 @@
 import { User } from "~/interfaces/user";
 
 export async function fetchUserPreferences(email: string, token: string) {
-  const response = await fetch(`http://localhost:5220/api/Destinos/by-email/${email}`, {
+  const response = await fetch(`http://localhost:5207/api/Destinos/by-email/${email}`, {
     method: "GET",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -18,7 +18,7 @@ export async function fetchUserPreferences(email: string, token: string) {
 
 export async function fetchAllUsersData(token: string): Promise<User[]> {
   try {
-    const response = await fetch("http://localhost:5220/api/usuarios", {
+    const response = await fetch("http://localhost:5207/api/usuarios", {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,

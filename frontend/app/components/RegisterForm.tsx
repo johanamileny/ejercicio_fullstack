@@ -11,19 +11,19 @@ const RegisterForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setErrorMessage(null); // Clear previous errors
 
     const formData = new FormData(event.currentTarget);
     const user: UserRecord = {
       email: formData.get("email") as string,
       nombre: formData.get("nombre") as string,
       password: formData.get("password") as string,
-      
     };
 
     // Validación de campos requeridos
     if (!user.email || !user.nombre || !user.password) {
       setErrorMessage("Todos los campos son obligatorios.");
-      setTimeout(() => setErrorMessage(null), 3000); // Ocultar después de 3 segundos
+      setTimeout(() => setErrorMessage(null), 5000);
       return;
     }
 
@@ -40,8 +40,12 @@ const RegisterForm: React.FC = () => {
       }, 3000);
     } catch (error) {
       console.error("Error durante el registro:", error);
-      setErrorMessage("Error durante el registro. Verifica la conexión.");
-      setTimeout(() => setErrorMessage(null), 3000); // Ocultar después de 3 segundos
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("Error durante el registro. Verifica la conexión con el servidor.");
+      }
+      setTimeout(() => setErrorMessage(null), 8000); // Show error longer
     }
   };
 
