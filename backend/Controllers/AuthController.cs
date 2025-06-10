@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using Api.Models;
 using Api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,11 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+=======
+﻿using Api.Models;
+using Api.Services;
+using Microsoft.AspNetCore.Mvc;
+>>>>>>> ejercicio_2
 using System.Threading.Tasks;
 
 namespace Api.Controllers
@@ -14,6 +20,7 @@ namespace Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+<<<<<<< HEAD
         private readonly IUsuarioService _usuarioService;
         private readonly IConfiguration _configuration;
 
@@ -84,3 +91,26 @@ namespace Api.Controllers
         public string Password { get; set; } = string.Empty;
     }
 }
+=======
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
+        {
+            _authService = authService;
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var (token, userType) = await _authService.Authenticate(request);
+
+            if (token == null)
+                return Unauthorized(new { message = "Credenciales incorrectas" });
+
+            return Ok(new { token, userType });
+        }
+    }
+}
+
+
+>>>>>>> ejercicio_2

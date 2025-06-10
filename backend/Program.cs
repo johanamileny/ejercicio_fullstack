@@ -26,20 +26,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// Configurar autorización con política "AdminOnly"
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminOnly", policy =>
-        policy.RequireRole("ADMIN"));
-});
+// Registro de servicios
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 // Configurar PostgreSQL
 builder.Services.AddDbContext<UsuarioContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Servicios de usuario
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+// Configurar autorización
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("ADMIN"));
+});
 
 // Configurar CORS
 builder.Services.AddCors(options =>
@@ -53,15 +53,13 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Configurar controladores
+// Configurar controladores y Swagger
 builder.Services.AddControllers();
-
-// Configurar Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "User API", Version = "v1" });
-    
+
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme",
@@ -90,6 +88,7 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configurar middleware
+<<<<<<< HEAD
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -110,6 +109,21 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
+=======
+app.UseHttpsRedirection();
+app.UseCors("AllowAll");
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "UserAPI v1");
+    options.RoutePrefix = string.Empty; // Acceso directo desde la raíz
+});
+
+app.UseExceptionHandler("/error");
+>>>>>>> ejercicio_2
 app.MapControllers();
 
 app.Run();

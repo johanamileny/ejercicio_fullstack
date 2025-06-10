@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "@remix-run/react";
 import { LoginFormValues } from "~/interfaces/loginForm";
 import "~/styles/login.css";
-import { authenticate } from "~/services/auth";
+import { loginUser } from "~/services/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -24,29 +24,25 @@ export default function Login() {
     }
 
     try {
-      const user = await authenticate(data.email, data.password);
-      if (user) {
+      const user = await loginUser(data);
+      console.log("Respuesta del backend:", user);
+
+      if (user?.token) {
         sessionStorage.setItem(
           "userAuthData",
           JSON.stringify({
             token: user.token,
-            role: user.userType,
             email: data.email,
           })
         );
 
-        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         document.cookie = `token=${user.token}; path=/; SameSite=Strict;`;
         console.log("Current cookies:", document.cookie);
 
-        // Dispatch custom event to notify userAuth changes
         window.dispatchEvent(new Event("userAuthChange"));
 
-        if (user.userType === "ADMIN") {
-          navigate("/");
-        } else if (user.userType === "CLIENT") {
-          navigate("/");
-        }
+        // Redirigir tras inicio de sesión exitoso
+        navigate("/index");
       } else {
         setErrorMessage("Usuario no existe");
         setTimeout(() => setErrorMessage(null), 3000);
@@ -59,11 +55,10 @@ export default function Login() {
   };
 
   return (
-    <div id="container2" className="login-container">
+    <div className="login-container">
       <form id="formRegister" onSubmit={handleSubmit}>
         <input
           type="email"
-          id="email"
           name="email"
           placeholder="Introduce tu correo electrónico"
           required
@@ -73,30 +68,27 @@ export default function Login() {
 
         <input
           type="password"
-          id="password"
           name="password"
           placeholder="Introduce tu contraseña"
           required
           autoComplete="current-password"
           className="input"
         />
-        <button
-          type="submit"
-          className="sessionButton"
-          id="button"
-        >
+        
+        <button type="submit" className="sessionButton">
           Iniciar Sesión
         </button>
 
         <div className="registerLinkContainer">
-        <span>¿Aún no tienes cuenta?</span>
-        <a href="/record" className="registerLink">
-          <strong>Registrarse</strong>
-        </a>
+          <span>¿Aún no tienes cuenta?</span>
+          <a href="/record" className="registerLink">
+            <strong>Registrarse</strong>
+          </a>
         </div>
       </form>
+
       {errorMessage && (
-        <div id="mensaje-error" className="snackbar">
+        <div className="snackbar">
           <p>{errorMessage}</p>
         </div>
       )}

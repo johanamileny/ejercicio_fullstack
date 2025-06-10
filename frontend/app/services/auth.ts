@@ -1,41 +1,27 @@
 import { API_URL } from "../constants/api";
 import { AuthenticatedUser } from "~/interfaces/AuthenticatedUser";
+import { LoginRequest } from "../interfaces/AuthInterfaces";
 
-export const authenticate = async (
-  email: string,
-  password: string
-): Promise<{ token: string; userType: string } | null> => {
+export const loginUser = async (credentials: LoginRequest): Promise<AuthenticatedUser> => {
   try {
-    const response = await fetch(`${API_URL}/api/Auth/login`, {
+    const response = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify(credentials),
     });
 
     if (!response.ok) {
-      console.error("Authentication error:", response.statusText);
-      return null;
+      const errorData = await response.json();
+      throw new Error(`Error ${response.status}: ${errorData.message || "Error desconocido"}`);
     }
 
-    const user: AuthenticatedUser = await response.json();
-    return user;
+    // Transformar la respuesta en un objeto de usuario autenticado
+    return await response.json();
   } catch (error) {
-    console.error("Error during authentication:", error);
-    return null;
+    console.error("Error en login:", error);
+    throw new Error("Error al autenticar usuario");
   }
 };
-
-export const logout = (): void => {
-  // Remove session data
-  sessionStorage.removeItem("userAuthData");
-  
-  // Clear token cookie
-  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  
-  // Dispatch event to notify changes
-  window.dispatchEvent(new Event("userAuthChange"));
-};
-
 
