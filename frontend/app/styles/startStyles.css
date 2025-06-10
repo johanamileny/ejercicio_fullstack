@@ -1,0 +1,140 @@
+/* 🌍 Ajuste global */
+html, body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif; /* Fuente moderna y elegante */
+  font-size: 18px; /* Tamaño base más grande */
+  font-weight: 400;
+  overflow: hidden; /* Evita desplazamientos innecesarios */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 🖼️ Imagen de fondo */
+html {
+  background: url('/assets/img/image6.png') no-repeat center center;
+  background-size: cover;
+  position: fixed;
+
+}
+
+/* 📦 Contenedor principal */
+.container {
+  width: 80vw; /* Aumenta el ancho del contenedor para mejor proporción */
+  max-width: 1000px; /* Se ajusta en pantallas grandes */
+  height: auto;
+  box-shadow: 0 0 50px rgba(0,0,0,.3);
+  margin: auto;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+}
+
+/* 🎭 Encabezado */
+.header-container {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+}
+
+.header-image {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: auto;
+  z-index: -1;
+  animation: zoomEffect 35s infinite linear alternate;
+}
+
+/* 📢 Título principal */
+.main-heading {
+  color: white;
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* 📊 Estadísticas */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 15px;
+  font-size: 14px;
+  color: white;
+}
+
+/* 🎭 Sección del cuerpo */
+.body {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+}
+
+/* 🖼️ Imagen de perfil */
+.body-image {
+  border-radius: 50%;
+  box-shadow: 5px 10px 75px rgba(0, 0, 0, .4);
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+/* 🎬 Botón de acción */
+.body-action-button {
+  background-color: #00d4ff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0,0,0,.4);
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+/* 🎞️ Tarjetas */
+.card-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 15px;
+  overflow-x: auto;
+}
+
+.card-list li {
+  display: inline-block;
+  width: 300px;
+  text-align: center;
+}
+
+/* 🎥 Animación */
+@keyframes zoomEffect {
+  0% { transform: scale(1) translateX(0); }
+  100% { transform: scale(1.2) translateX(-360px) translateY(-80px); }
+}
+
+.main-heading{
+
+  margin-top: 80px;
+}
+
+.body-info{
+  color: rgb(253, 253, 253);
+ margin-left: 50px;
+ margin-right: 100px;
+
+}

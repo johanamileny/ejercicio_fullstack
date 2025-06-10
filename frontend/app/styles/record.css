@@ -1,0 +1,254 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+#Registercon {
+  background: url('/assets/img/image1.png') no-repeat center center;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  margin: 0;
+}
+
+
+.form-container {
+  width: 70vw;
+  height: 55vh;
+  max-width: 500px;
+  max-height: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 35px;
+  border: 2px solid #00d4ff;
+  border-radius: 25px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+#email,
+#nombre,
+#password,
+#button,
+.role-select {
+  width: 90%;
+  height: 8%;
+  padding: 12px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #000000;
+}
+
+#button {
+  height: 10%;
+  font-size: 30px;
+  background-color: #0c66e1;
+  color: white;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#button:hover {
+  background-color: #0056b3;
+  transform: scale(1);
+}
+
+#button:active {
+  background-color: #003f7f;
+  transform: scale(1.05);
+}
+
+#terms,
+#termss {
+  width: 48%;
+  height: auto;
+  color: white;
+  text-align: center;
+}
+
+#termss {
+  transform: translateY(-20px);
+}
+
+#mensaje-exito {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #0056b3;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+strong {
+  align-text: center;
+}
+
+.registerButton {
+  height: 6% !important;
+  width: 45% !important;
+  font-size: 1.6rem !important;
+}
+
+.registradoButton {
+  display: flex;
+  height: 6% !important;
+  width: 45% !important;
+  background-color: gray !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+}
+
+.input {
+  width: 70%;
+  padding: 14px;
+  font-size: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
+  text-align: center;
+  appearance: none;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.3s ease-in-out;
+}
+
+.input:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.input:focus {
+  border: 2px solid #00d4ff;
+  box-shadow: 0 0 15px #00d4ff;
+}
+
+.input:focus::placeholder {
+  color: rgba(255, 255, 255, 0);
+}
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  -webkit-text-fill-color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 70%;
+  padding: 14px;
+  font-size: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
+  text-align: center;
+  cursor: pointer;
+}
+
+select:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+select:focus {
+  border: 2px solid #00d4ff;
+  box-shadow: 0 0 15px #00d4ff;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select-container {
+  position: relative;
+  display: inline-block;
+  width: 70%;
+}
+
+.select-container select {
+  width: 100%;
+}
+
+select option {
+  background: rgba(12, 102, 225, 0.9);
+  background: rgba(50, 50, 70, 0.5);
+  color: white;
+  padding: 10px;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+select option:hover,
+select option:checked {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+#Registercon {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#formRegister {
+  height: 100%;
+}
+
+/* Estilos para el snackbar de error */
+#mensaje-error {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes fadeOut {
+  from {opacity: 1; transform: translateY(0);}
+  to {opacity: 0; transform: translateY(-20px);}
+}
+
+
