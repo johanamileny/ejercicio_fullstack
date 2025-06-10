@@ -22,7 +22,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key is not configured.")))
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
 
@@ -44,12 +44,11 @@ builder.Services.AddAuthorization(options =>
 // Configurar CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "http://localhost:3001","http://localhost:5173")
+        policy.AllowAnyOrigin()
               .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
+              .AllowAnyHeader();
     });
 });
 
@@ -88,28 +87,6 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configurar middleware
-<<<<<<< HEAD
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "UserAPI v1");
-        options.RoutePrefix = string.Empty;
-    });
-}
-
-app.UseCors("AllowFrontend");
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.UseExceptionHandler("/error");
-// Remove HTTPS redirection in development
-if (!app.Environment.IsDevelopment())
-{
-    app.UseHttpsRedirection();
-}
-=======
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseAuthentication();
@@ -123,7 +100,6 @@ app.UseSwaggerUI(options =>
 });
 
 app.UseExceptionHandler("/error");
->>>>>>> ejercicio_2
 app.MapControllers();
 
 app.Run();

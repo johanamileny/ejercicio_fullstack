@@ -1,6 +1,7 @@
 body, html {
   margin: 0;
   padding: 0;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .login-container {
@@ -12,66 +13,104 @@ body, html {
   background: url('/assets/img/image1.png');
   background-size: cover;
   background-position: center;
+  position: relative;
 }
 
 #formRegister {
-  width: 50%;
-  height: 55vh;
-  max-width: 500px;
-  min-width: 500px;
-  max-height: 550px;
+  width: 90%;
+  max-width: 450px;
   min-height: 500px;
+  padding: 40px 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 35px;
-  border: 2px solid #00d4ff;
-  border-radius: 25px;
-  background: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  gap: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(25px);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   color: #fff;
-  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  animation: slideInUp 0.8s ease-out;
 }
 
-#formRegister:hover,
-#formRegister:focus-within {
-  opacity: 1;
+#formRegister::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.8s;
+}
+
+#formRegister:hover::before {
+  left: 100%;
+}
+
+#formRegister:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 15px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border-color: rgba(0, 212, 255, 0.3);
 }
 
 .input {
-  width: 70%;
-  padding: 14px;
-  font-size: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
+  width: 85%;
+  padding: 16px 20px;
+  font-size: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
   color: white;
-  border-radius: 10px;
+  border-radius: 12px;
   outline: none;
-  transition: all 0.3s ease-in-out;
-  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
-  text-align: center;
-  appearance: none;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(255, 255, 255, 0.1);
+  text-align: left;
+  position: relative;
+  font-weight: 400;
+  letter-spacing: 0.5px;
 }
 
 .input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-  transition: color 0.3s ease-in-out;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease-in-out;
+  font-weight: 300;
 }
 
 .input:hover {
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(0, 212, 255, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
 }
 
 .input:focus {
   border: 2px solid #00d4ff;
-  box-shadow: 0 0 15px #00d4ff;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 0 20px rgba(0, 212, 255, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px) scale(1.02);
 }
 
 .input:focus::placeholder {
-  color: rgba(255, 255, 255, 0);
+  color: transparent;
+  transform: translateY(-20px);
 }
 
 .input:-webkit-autofill,
@@ -87,33 +126,71 @@ body, html {
 
 .sessionButton {
   color: white;
-  width: 70%;
-  text-align: center;
-  padding: 12px 18px;
-  font-weight: bold;
+  width: 85%;
+  padding: 16px 20px;
+  font-weight: 600;
+  font-size: 16px;
   text-decoration: none;
-  border: 2px solid #00d4ff;
-  border-radius: 8px;
-  background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 
+    0 4px 15px rgba(0, 212, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.sessionButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.6s;
+}
+
+.sessionButton:hover::before {
+  left: 100%;
 }
 
 .sessionButton:hover {
-  background-color: #00d4ff;
-  color: #000835;
-  box-shadow: 0 0 10px #00d4ff;
+  background: linear-gradient(135deg, #00e5ff 0%, #00acc6 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 8px 25px rgba(0, 212, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .sessionButton:active {
-  background-color: #003f7f;
-  transform: scale(1.05);
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 
+    0 4px 15px rgba(0, 212, 255, 0.5),
+    inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.sessionButton:focus {
+  animation: pulse 1.5s infinite;
 }
 
 #terms {
-  width: 70%;
-  height: 8%;
-  color: white;
+  width: 85%;
+  color: rgba(255, 255, 255, 0.9);
   text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 10px 0;
 }
 
 .registerLinkContainer {
@@ -121,21 +198,24 @@ body, html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 10px;
 }
 
-span {
-  opacity: 0.7;
+.registerLinkContainer span {
+  opacity: 0.8;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .registerLink {
-  color: white;
-  font-weight: bold;
+  color: #00d4ff;
+  font-weight: 600;
   text-decoration: none;
   position: relative;
-  transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-  margin-left: 15px;
-  display: inline-block;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-size: 15px;
+  letter-spacing: 0.5px;
 }
 
 .registerLink::after {
@@ -145,19 +225,35 @@ span {
   bottom: -3px;
   width: 0;
   height: 2px;
-  background-color: #00d4ff;
-  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+  background: linear-gradient(90deg, #00d4ff, #00e5ff);
+  transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .registerLink:hover {
-  color: #00d4ff;
-  text-shadow: 0 0 8px #00d4ff;
-  transform: scale(1.1);
+  color: #00e5ff;
+  text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+  transform: translateY(-2px) scale(1.05);
 }
 
 .registerLink:hover::after {
   width: 100%;
-  height: 3px;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 212, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); }
 }
 
 /* Estilos para el snackbar de error */
