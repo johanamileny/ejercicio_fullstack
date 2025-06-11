@@ -81,7 +81,7 @@ export default function Login() {
 
         <div className="registerLinkContainer">
           <span>¿Aún no tienes cuenta?</span>
-          <a href="/record" className="registerLink">
+          <a href="/" className="registerLink">
             <strong>Registrarse</strong>
           </a>
         </div>
