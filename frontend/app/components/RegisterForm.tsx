@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "~/styles/record.css";
+import "../styles/record.css";
 import { registerUser } from "../services/recordService";
-import { UserRecord } from "~/interfaces/UserRecord";
+import { UserRecord } from "../interfaces/UserRecord";
 
 const RegisterForm: React.FC = () => {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
@@ -107,8 +107,8 @@ const RegisterForm: React.FC = () => {
         <button className="registerButton" id="button" type="submit" disabled={!isCheckboxChecked}>
           Registrarse
         </button>
-
-        <a href="/login">¿Ya tienes una cuenta? Inicia sesión</a>
+      
+        <a href="/Login">¿Ya tienes una cuenta? Inicia sesión</a>
       </form>
       {successMessage && (
         <div id="mensaje-exito">

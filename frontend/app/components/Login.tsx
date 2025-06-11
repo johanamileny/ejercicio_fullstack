@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "@remix-run/react";
-import { LoginFormValues } from "~/interfaces/loginForm";
-import "~/styles/login.css";
-import { loginUser } from "~/services/auth";
+import { LoginFormValues } from "../interfaces/loginForm";
+import "../styles/login.css";
+import { loginUser } from "../services/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -33,8 +33,12 @@ export default function Login() {
           JSON.stringify({
             token: user.token,
             email: data.email,
+            name: user.name, 
           })
         );
+
+        console.log("Respuesta del backend:", user);
+
 
         document.cookie = `token=${user.token}; path=/; SameSite=Strict;`;
         console.log("Current cookies:", document.cookie);
