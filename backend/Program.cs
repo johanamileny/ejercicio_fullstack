@@ -6,10 +6,35 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using DotNetEnv;
+
+// Cargar las variables de entorno desde el archivo .env
+
+DotNetEnv.Env.Load(); // Carga variables desde .env automáticamente
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar autenticación JWT
+// Leer las variables de entorno para la conexión
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+var dbPort = Environment.GetEnvironmentVariable("DB_PORT");
+var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+// Construir cadena de conexión manualmente
+var connectionString = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPassword}";
+
+var jwtKey = Environment.GetEnvironmentVariable("JWT__KEY")
+             ?? throw new InvalidOperationException("La clave JWT no está configurada (JWT__KEY).");
+
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT__ISSUER")
+                ?? throw new InvalidOperationException("El emisor JWT no está configurado (JWT__ISSUER).");
+
+var jwtAudience = Environment.GetEnvironmentVariable("JWT__AUDIENCE")
+                  ?? throw new InvalidOperationException("La audiencia JWT no está configurada (JWT__AUDIENCE).");
+
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -19,21 +44,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
         };
     });
+
 
 // Registro de servicios
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
-// Configurar PostgreSQL
+// Configurar PostgreSQL con la cadena construida
 builder.Services.AddDbContext<UsuarioContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
 // Configurar autorización
 builder.Services.AddAuthorization(options =>

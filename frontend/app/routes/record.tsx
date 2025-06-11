@@ -1,5 +1,5 @@
-import RegisterForm from "~/components/RegisterForm";
-import "~/styles/record.css";
+import RegisterForm from "../components/RegisterForm";
+import "../styles/record.css";
 
 export default function RecordPage() {
 

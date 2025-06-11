@@ -21,14 +21,24 @@ namespace Api.Services
             _configuration = configuration;
         }
 
-        public async Task<(string? Token, string? UserType)> Authenticate(LoginRequest request)
+        public async Task<(string? Token, string? UserType, string? Name)> Authenticate(LoginRequest request)
         {
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+                return (null, null, null);
+
             var usuario = await _usuarioRepository.GetByEmailAsync(request.Email);
             if (usuario == null || usuario.Password != request.Password)
-                return (null, null);
+                return (null, null, null);
+
+            var jwtKey = _configuration["Jwt:Key"]
+                         ?? throw new InvalidOperationException("JWT Key not configured.");
+            var jwtIssuer = _configuration["Jwt:Issuer"]
+                            ?? throw new InvalidOperationException("JWT Issuer not configured.");
+            var jwtAudience = _configuration["Jwt:Audience"]
+                              ?? throw new InvalidOperationException("JWT Audience not configured.");
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+            var key = Encoding.UTF8.GetBytes(jwtKey);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -36,16 +46,17 @@ namespace Api.Services
                 {
                     new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                     new Claim(ClaimTypes.Email, usuario.Email),
-                    new Claim(ClaimTypes.Role, usuario.UserType)
+                    new Claim(ClaimTypes.Role, usuario.UserType),
+                    new Claim(ClaimTypes.Name, usuario.Nombre) // ✅ Incluye el nombre en los claims
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
-                Issuer = _configuration["Jwt:Issuer"],
-                Audience = _configuration["Jwt:Audience"],
+                Issuer = jwtIssuer,
+                Audience = jwtAudience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return (tokenHandler.WriteToken(token), usuario.UserType);
+            return (tokenHandler.WriteToken(token), usuario.UserType, usuario.Nombre); // ✅ Devuelve el nombre
         }
     }
 }

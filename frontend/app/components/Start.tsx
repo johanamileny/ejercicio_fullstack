@@ -1,8 +1,25 @@
-import { Link } from "@remix-run/react";
-import "~/styles/startStyles.css";
+import "../styles/startStyles.css";
 
 
 export default function Start() {
+
+  const storedUserData = sessionStorage.getItem("userAuthData");
+
+let userName = "Usuario"; // nombre por defecto
+
+try {
+  if (storedUserData) {
+    const parsedUserData = JSON.parse(storedUserData);
+    if (parsedUserData && typeof parsedUserData.name === "string") {
+      userName = parsedUserData.name;
+    }
+  }
+} catch (error) {
+  console.error("Error al parsear userAuthData:", error);
+}
+
+  
+
   return (
     <div className="container">
       <div className="header-container">
@@ -36,7 +53,7 @@ export default function Start() {
             <path d="M0 0h24v24H0z" fill="none" />
           </svg>
 
-          <h1 className="main-heading">Usuario</h1>
+          <h1 className="main-heading">{userName}</h1>
           <div className="stats">
             <span className="stat-module">
               Películas <span className="stat-number">56</span>

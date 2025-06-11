@@ -19,12 +19,17 @@ namespace Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var (token, userType) = await _authService.Authenticate(request);
+            var (token, userType, name) = await _authService.Authenticate(request);
 
             if (token == null)
                 return Unauthorized(new { message = "Credenciales incorrectas" });
 
-            return Ok(new { token, userType });
+            return Ok(new
+            {
+                token,
+                userType,
+                name // ✅ Devuelve el nombre del usuario
+            });
         }
     }
 }

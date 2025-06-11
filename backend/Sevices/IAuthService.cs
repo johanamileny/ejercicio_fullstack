@@ -5,6 +5,6 @@ namespace Api.Services
 {
     public interface IAuthService
     {
-        Task<(string? Token, string? UserType)> Authenticate(LoginRequest request);
+        Task<(string? Token, string? UserType, string? Name)> Authenticate(LoginRequest request);
     }
 }
