@@ -1,4 +1,4 @@
-FROM node:23-slim
+FROM node:22.14.0-slim
 
 # Configurar el directorio de trabajo
 WORKDIR /app
@@ -12,7 +12,7 @@ RUN npm install
 # Construir la aplicación
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 5136
 
 # Comando para iniciar la aplicación
 CMD ["npm", "start"]

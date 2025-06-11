@@ -108,7 +108,7 @@ const RegisterForm: React.FC = () => {
           Registrarse
         </button>
       
-        <a href="/Login">¿Ya tienes una cuenta? Inicia sesión</a>
+        <a href="/login">¿Ya tienes una cuenta? Inicia sesión</a>
       </form>
       {successMessage && (
         <div id="mensaje-exito">

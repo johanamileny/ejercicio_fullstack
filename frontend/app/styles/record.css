@@ -1005,3 +1005,7 @@ select,
 }
 
 
+a {
+  position: relative; /* O absolute, según sea necesario */
+  z-index: 9999; /* Valor alto para asegurar que está por encima */
+}
