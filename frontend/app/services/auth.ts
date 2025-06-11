@@ -1,5 +1,5 @@
 import { API_URL } from "../constants/api";
-import { AuthenticatedUser } from "~/interfaces/AuthenticatedUser";
+import { AuthenticatedUser } from "../interfaces/AuthenticatedUser";
 import { LoginRequest } from "../interfaces/AuthInterfaces";
 
 export const loginUser = async (credentials: LoginRequest): Promise<AuthenticatedUser> => {

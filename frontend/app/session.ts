@@ -1,9 +1,15 @@
 import { createCookieSessionStorage } from "@remix-run/node";
 
+const sessionSecret = process.env.SESSION_SECRET;
+
+if (!sessionSecret) {
+  throw new Error("La variable de entorno SESSION_SECRET no está definida.");
+}
+
 export const sessionStorage = createCookieSessionStorage({
   cookie: {
     name: "__session",
-    secrets: ["tuSecretoSuperSeguro"],
+    secrets: [sessionSecret],
     sameSite: "lax",
     path: "/",
     httpOnly: true,
