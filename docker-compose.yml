@@ -1,35 +1,46 @@
 services:
   db:
     image: postgres:latest
-    container_name: dbtestpg
+    container_name: dbtestpgres
     restart: always
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Admin123*
+      POSTGRES_DB: usuariosdb
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_INITDB_ARGS: "--data-checksums"
     ports:
       - "5433:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - my_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   backend:
     build: ./Backend
     container_name: backend
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=${POSTGRES_DB}"
     ports:
-      - "8080:8080"
+      - "5000:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - POSTGRES_CONNECTION=Host=db;Port=5432;Database=usuariosdb;Username=postgres;Password=Admin123*
     networks:
       - my_network
+
   frontend:
     build: ./Frontend
     container_name: frontend
-    environment:
-      API_URL: "http://backend:8080"
     ports:
       - "3000:3000"
     depends_on:
@@ -39,6 +50,7 @@ services:
 
 volumes:
   pg_data:
+    driver: local
 
 networks:
   my_network:

@@ -6,34 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using DotNetEnv;
-
-// Cargar las variables de entorno desde el archivo .env
-
-DotNetEnv.Env.Load(); // Carga variables desde .env automáticamente
-
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Leer las variables de entorno para la conexión
-var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
-var dbPort = Environment.GetEnvironmentVariable("DB_PORT");
-var dbName = Environment.GetEnvironmentVariable("DB_NAME");
-var dbUser = Environment.GetEnvironmentVariable("DB_USER");
-var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
-
-// Construir cadena de conexión manualmente
-var connectionString = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPassword}";
-
-var jwtKey = Environment.GetEnvironmentVariable("JWT__KEY")
-             ?? throw new InvalidOperationException("La clave JWT no está configurada (JWT__KEY).");
-
-var jwtIssuer = Environment.GetEnvironmentVariable("JWT__ISSUER")
-                ?? throw new InvalidOperationException("El emisor JWT no está configurado (JWT__ISSUER).");
-
-var jwtAudience = Environment.GetEnvironmentVariable("JWT__AUDIENCE")
-                  ?? throw new InvalidOperationException("La audiencia JWT no está configurada (JWT__AUDIENCE).");
-
+// Valores hardcodeados
+var connectionString = "Host=db;Port=5432;Database=usuariosdb;Username=postgres;Password=Admin123*";
+var jwtKey = "your-super-secret-key-here-minimum-16-characters";
+var jwtIssuer = "http://localhost:8080";
+var jwtAudience = "http://localhost:3000";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -71,9 +51,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:3000")
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
 
@@ -112,19 +93,44 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configurar middleware
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "UserAPI v1");
+        options.RoutePrefix = string.Empty;
+    });
+}
+
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSwagger();
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "UserAPI v1");
-    options.RoutePrefix = string.Empty; // Acceso directo desde la raíz
-});
-
 app.UseExceptionHandler("/error");
 app.MapControllers();
+
+// Aplicar migraciones al iniciar
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<UsuarioContext>();
+        // Asegúrate de que la base de datos está creada
+        context.Database.EnsureCreated();
+        
+        // Intenta aplicar las migraciones
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate();
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocurrió un error al migrar la base de datos.");
+    }
+}
 
 app.Run();
