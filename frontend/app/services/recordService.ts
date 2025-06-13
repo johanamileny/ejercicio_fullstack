@@ -6,7 +6,7 @@ export const registerUser = async (user: UserRecord) => {
     console.log('Attempting to register user:', { ...user, password: '[HIDDEN]' });
     console.log('API URL:', `${API_URL}/api/usuarios`);
     
-    const response = await fetch(`${API_URL}/api/usuarios`, {
+    const response = await fetch(`http://backend:5207/api/usuarios`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

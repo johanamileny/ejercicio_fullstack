@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: fullstack-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: backend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: POSTGRES_CONNECTION
+          value: "Host=postgres;Port=5432;Database=usuariosdb;Username=$(POSTGRES_USER);Password=$(POSTGRES_PASSWORD)"
+        envFrom:
+        - secretRef:
+            name: db-credentials
